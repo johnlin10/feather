@@ -26,7 +26,6 @@ export default function Home() {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           })
-          console.log(position)
           setLocationPermissionDenied(false)
           setError('')
         },
@@ -76,7 +75,6 @@ export default function Home() {
     if (weatherData && userLocation && weatherData.length > 0) {
       const closestStation = findClosestStation(userLocation, weatherData)
       setWeatherStation(closestStation)
-      console.log(closestStation)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userLocation, weatherData])
@@ -85,7 +83,7 @@ export default function Home() {
     let minDistance = Infinity
     let closestStation = null
 
-    stations.forEach((station) => {
+    stations.forEach((station, index) => {
       const lat = station.GeoInfo.Coordinates[0].StationLatitude
       const long = station.GeoInfo.Coordinates[0].StationLongitude
       const distance = getDistanceFromLatLonInKm(
@@ -97,6 +95,8 @@ export default function Home() {
       if (distance < minDistance) {
         minDistance = distance
         closestStation = station
+        // console.log(distance)
+        // console.log(station)
       }
     })
 

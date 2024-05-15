@@ -1,35 +1,46 @@
 {
   "short_name": "Feather",
   "name": "Feather",
+  "id": "feather.johnlin",
   "icons": [
     {
-      "src": "feather_icon_noborder_64.png",
-      "type": "image/png",
-      "sizes": "64x64"
+      "src": "/icon/general-icon/Feather_general_icon_64.png",
+      "sizes": "64x64",
+      "type": "image/png"
     },
     {
-      "src": "feather_icon_noborder_128.png",
-      "type": "image/png",
-      "sizes": "128x128"
+      "src": "/icon/general-icon/Feather_general_icon_72.png",
+      "sizes": "72x72",
+      "type": "image/png"
     },
     {
-      "src": "feather_icon_noborder_256.png",
-      "type": "image/png",
-      "sizes": "256x256"
+      "src": "/icon/general-icon/Feather_general_icon_96.png",
+      "sizes": "96x96",
+      "type": "image/png"
     },
     {
-      "src": "feather_icon_noborder_512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "/icon/general-icon/Feather_general_icon_128.png",
+      "sizes": "128x128",
+      "type": "image/png"
     },
     {
-      "src": "feather_icon_noborder_1024.png",
-      "type": "image/png",
-      "sizes": "1024x1024"
+      "src": "/icon/general-icon/Feather_general_icon_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon/general-icon/Feather_general_icon_256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon/general-icon/Feather_general_icon_1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#2e6bc1",
+  "background_color": "#161b22"
 }
