@@ -14,6 +14,16 @@
 
     .search_view {
       @include set_HW(null, calc(100% - 108px));
+
+      > .header {
+        @include flex_layout(row, center, flex-start);
+
+        > img {
+          margin-right: 12px;
+          height: 48px;
+          user-select: none;
+        }
+      }
     }
     .content {
       width: 100%;
@@ -24,6 +34,10 @@
 
       > h1 {
         margin-bottom: 12px;
+
+        > svg {
+          margin-right: 12px;
+        }
       }
 
       > p.weather {

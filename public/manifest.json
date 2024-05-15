@@ -1,21 +1,31 @@
 {
   "short_name": "Feather",
-  "name": "Your light and accurate weather updates.",
+  "name": "Feather",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
+      "src": "feather_icon_noborder_64.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "64x64"
     },
     {
-      "src": "logo512.png",
+      "src": "feather_icon_noborder_128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "feather_icon_noborder_256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "feather_icon_noborder_512.png",
       "type": "image/png",
       "sizes": "512x512"
+    },
+    {
+      "src": "feather_icon_noborder_1024.png",
+      "type": "image/png",
+      "sizes": "1024x1024"
     }
   ],
   "start_url": ".",

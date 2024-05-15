@@ -1,6 +1,6 @@
 import style from './Home.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBusSimple } from '@fortawesome/free-solid-svg-icons'
+import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { useContext } from 'react'
 import { AppContext } from '../../AppContext'
@@ -120,6 +120,7 @@ export default function Home() {
       <div className={style.container}>
         <div className={style.search_view}>
           <div className={style.header}>
+            <img src="/feather_icon_noborder_64.png" alt="" />
             <h1>Feather</h1>
           </div>
         </div>
@@ -128,6 +129,7 @@ export default function Home() {
         ) : (
           <div className={style.content}>
             <h1>
+              <FontAwesomeIcon icon={faLocationDot} />
               {weatherStation?.GeoInfo.CountyName} {weatherStation?.StationName}
             </h1>
             <p className={style.weather}>
