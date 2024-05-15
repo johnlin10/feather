@@ -25,6 +25,7 @@
         }
       }
     }
+
     .content {
       width: 100%;
 
@@ -61,6 +62,21 @@
           font-size: 1rem;
           color: #ffffff7f;
         }
+      }
+    }
+
+    > p {
+      &.locationPermissionDenied {
+        @include flex_layout(row, center, flex-start);
+        padding: 3px 12px 3px 8px;
+        font-size: 1rem;
+        color: #ffffffd1;
+        background: #951e1e;
+        @include border_radius(24px);
+      }
+
+      > svg {
+        margin-right: 6px;
       }
     }
   }

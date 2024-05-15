@@ -1,16 +1,20 @@
 import style from './Home.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
+import {
+  faLocationDot,
+  faCircleExclamation,
+} from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { useContext } from 'react'
 import { AppContext } from '../../AppContext'
 
 export default function Home() {
   const { userLocation, setUserLocation } = useContext(AppContext)
+  const [locationPermissionDenied, setLocationPermissionDenied] =
+    useState(false)
   const [weatherData, setWeatherData] = useState([])
   const [weatherStation, setWeatherStation] = useState(null)
   const [error, setError] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
 
   const apiKey = process.env.REACT_APP_OPEN_WEATHER_API_KEY
 
@@ -22,12 +26,21 @@ export default function Home() {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           })
+          console.log(position)
+          setLocationPermissionDenied(false)
+          setError('')
         },
         (error) => {
-          setError(error.message)
-          setIsLoading(false)
+          if (error.code === error.PERMISSION_DENIED) {
+            setLocationPermissionDenied(true)
+          }
+          setError(
+            '無法訪問您的位置，請同意我們取用您的位置，以提供在地天氣的服務。'
+          )
         }
       )
+    } else {
+      setError('此瀏覽器不支持地理定位。')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -51,23 +64,16 @@ export default function Home() {
         } else {
           throw new Error('No stations data found')
         }
-        setIsLoading(false)
       })
       .catch((error) => {
         console.error('Failed to fetch weather data:', error)
         setError(error.message)
-        setIsLoading(false)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    if (
-      weatherData &&
-      userLocation.latitude &&
-      userLocation.longitude &&
-      weatherData.length > 0
-    ) {
+    if (weatherData && userLocation && weatherData.length > 0) {
       const closestStation = findClosestStation(userLocation, weatherData)
       setWeatherStation(closestStation)
       console.log(closestStation)
@@ -115,6 +121,14 @@ export default function Home() {
     return deg * (Math.PI / 180)
   }
 
+  function checkDataReady() {
+    if (weatherData && userLocation) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   return (
     <div className={style.view}>
       <div className={style.container}>
@@ -124,9 +138,8 @@ export default function Home() {
             <h1>Feather</h1>
           </div>
         </div>
-        {isLoading && (!weatherStation || !weatherStation.length > 0) ? (
-          <p>Loading...</p>
-        ) : (
+        <p className={style.error}>{error}</p>
+        {checkDataReady() ? (
           <div className={style.content}>
             <h1>
               <FontAwesomeIcon icon={faLocationDot} />
@@ -144,6 +157,13 @@ export default function Home() {
               <p>大氣壓力 {weatherStation?.WeatherElement.AirPressure} hPa</p>
             </div>
           </div>
+        ) : locationPermissionDenied ? (
+          <p className={style.locationPermissionDenied}>
+            <FontAwesomeIcon icon={faCircleExclamation} />
+            位置存取遭拒
+          </p>
+        ) : (
+          <p>加載中...</p>
         )}
       </div>
     </div>
