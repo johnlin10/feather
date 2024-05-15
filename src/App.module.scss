@@ -1,0 +1,5 @@
+@import './mixin.scss';
+
+.app {
+  @include set_HW(100%, 100%);
+}

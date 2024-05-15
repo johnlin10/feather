@@ -1,0 +1,53 @@
+@import '../../mixin.scss';
+
+.view {
+  @include set_HW(100%, 100%);
+
+  .container {
+    @include flex_layout(column, flex-start, space-between);
+    @include set_HW(100%, 100%);
+    padding: 48px;
+
+    @media (max-width: 550px) {
+      padding: 48px 36spx;
+    }
+
+    .search_view {
+      @include set_HW(null, calc(100% - 108px));
+    }
+    .content {
+      width: 100%;
+
+      > * {
+        width: fit-content;
+      }
+
+      > h1 {
+        margin-bottom: 12px;
+      }
+
+      > p.weather {
+        margin-bottom: 12px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        padding: 3px 12px;
+        background: #ffffff3f;
+        @include border_radius(24px);
+      }
+
+      > .values {
+        @include flex_layout(row, center, null);
+        flex-wrap: wrap;
+        width: 100%;
+
+        > p {
+          min-width: max-content;
+          width: fit-content;
+          margin: 3px 18px 3px 0;
+          font-size: 1rem;
+          color: #ffffff7f;
+        }
+      }
+    }
+  }
+}
