@@ -2,6 +2,11 @@
 
 .view {
   @include set_HW(100%, 100%);
+  box-shadow: 0 0 80px 80px inset var(--map_bg);
+
+  @media (max-width: 550px) {
+    box-shadow: 0 0 40px 40px inset var(--map_bg);
+  }
 
   .container {
     @include flex_layout(column, flex-start, space-between);
@@ -13,6 +18,7 @@
     }
 
     .search_view {
+      z-index: 100;
       @include set_HW(null, calc(100% - 108px));
 
       > .header {
@@ -66,6 +72,7 @@
     }
 
     > p {
+      z-index: 100;
       &.locationPermissionDenied {
         @include flex_layout(row, center, flex-start);
         padding: 3px 12px 3px 8px;

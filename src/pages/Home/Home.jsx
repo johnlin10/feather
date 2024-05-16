@@ -8,24 +8,28 @@ import { useEffect, useState } from 'react'
 import { useContext } from 'react'
 import { AppContext } from '../../AppContext'
 
+import Map from '../../wedgets/Map/Map'
+
 export default function Home() {
   const { userLocation, setUserLocation } = useContext(AppContext)
   const [locationPermissionDenied, setLocationPermissionDenied] =
     useState(false)
-  const [weatherData, setWeatherData] = useState([])
+  const [weatherData, setWeatherData] = useState()
+  const [weatherStationLocation, setWeatherStationLocation] = useState()
   const [weatherStation, setWeatherStation] = useState(null)
   const [error, setError] = useState(null)
 
   const apiKey = process.env.REACT_APP_OPEN_WEATHER_API_KEY
 
+  // 位置及權限獲取
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setUserLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          })
+          const { latitude, longitude } = position.coords
+          setUserLocation([latitude, longitude])
+          console.log([latitude, longitude])
+
           setLocationPermissionDenied(false)
           setError('')
         },
@@ -44,6 +48,7 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // 天氣資料獲取
   useEffect(() => {
     fetch(
       `https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0001-001?Authorization=${apiKey}&format=JSON`,
@@ -71,14 +76,25 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // 將尋找與當前位置最近的天氣資料
   useEffect(() => {
     if (weatherData && userLocation && weatherData.length > 0) {
       const closestStation = findClosestStation(userLocation, weatherData)
       setWeatherStation(closestStation)
+      setWeatherStationLocation([
+        closestStation.GeoInfo.Coordinates[0].StationLatitude,
+        closestStation.GeoInfo.Coordinates[0].StationLongitude,
+      ])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userLocation, weatherData])
 
+  /**
+   * 篩選出距離使用者最近的氣象站資料
+   * @param {Array} userLocation - 使用者位置
+   * @param {Array} stations - 天氣資料
+   * @returns
+   */
   function findClosestStation(userLocation, stations) {
     let minDistance = Infinity
     let closestStation = null
@@ -87,22 +103,28 @@ export default function Home() {
       const lat = station.GeoInfo.Coordinates[0].StationLatitude
       const long = station.GeoInfo.Coordinates[0].StationLongitude
       const distance = getDistanceFromLatLonInKm(
-        userLocation.latitude,
-        userLocation.longitude,
+        userLocation[0],
+        userLocation[1],
         lat,
         long
       )
       if (distance < minDistance) {
         minDistance = distance
         closestStation = station
-        // console.log(distance)
-        // console.log(station)
       }
     })
 
     return closestStation
   }
 
+  /**
+   * 計算使用者與氣象站的距離（此計算方法由AI撰寫）
+   * @param {Number} lat1 - 使用者位置緯度
+   * @param {Number} lon1 - 使用者位置經度
+   * @param {Number} lat2 - 氣象站位置緯度
+   * @param {Number} lon2 - 氣象站位置經度
+   * @returns
+   */
   function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     const R = 6371 // Radius of the earth in km
     const dLat = deg2rad(lat2 - lat1)
@@ -114,15 +136,15 @@ export default function Home() {
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2)
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    return R * c // Distance in km
+    return R * c // 距離（公里）
   }
-
   function deg2rad(deg) {
     return deg * (Math.PI / 180)
   }
 
+  // 判斷天氣資料是否準備好
   function checkDataReady() {
-    if (weatherData && userLocation) {
+    if (weatherData?.length > 0 && userLocation) {
       return true
     } else {
       return false
@@ -131,6 +153,11 @@ export default function Home() {
 
   return (
     <div className={style.view}>
+      <Map
+        userPosition={userLocation}
+        stationPostion={weatherStationLocation}
+        positionReady={checkDataReady()}
+      />
       <div className={style.container}>
         <div className={style.search_view}>
           <div className={style.header}>
