@@ -17,5 +17,10 @@
       align-items: center;
       justify-content: center;
     }
+
+    img {
+      filter: brightness(2);
+      -webkit-filter: brightness(2);
+    }
   }
 }
