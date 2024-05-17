@@ -5,7 +5,8 @@
   box-shadow: 0 0 80px 80px inset var(--map_bg);
 
   @media (max-width: 550px) {
-    box-shadow: 0 0 40px 40px inset var(--map_bg);
+    box-shadow: 0 0 40px 20px inset var(--map_bg),
+      0 -24px 40px 20px inset var(--map_bg);
   }
 
   .container {
@@ -14,7 +15,7 @@
     padding: 48px;
 
     @media (max-width: 550px) {
-      padding: 48px 36spx;
+      padding: 48px 36px;
     }
 
     .search_view {
@@ -23,6 +24,8 @@
 
       > .header {
         @include flex_layout(row, center, flex-start);
+
+        cursor: pointer;
 
         > img {
           margin-right: 12px;

@@ -17,6 +17,7 @@ export default function Home() {
   const [weatherData, setWeatherData] = useState()
   const [weatherStationLocation, setWeatherStationLocation] = useState()
   const [weatherStation, setWeatherStation] = useState(null)
+  const [weatherStationClosestInKm, setWeatherStationClosestInKm] = useState([])
   const [error, setError] = useState(null)
 
   const apiKey = process.env.REACT_APP_OPEN_WEATHER_API_KEY
@@ -79,12 +80,16 @@ export default function Home() {
   // 將尋找與當前位置最近的天氣資料
   useEffect(() => {
     if (weatherData && userLocation && weatherData.length > 0) {
-      const closestStation = findClosestStation(userLocation, weatherData)
+      const { closestStation, closestInTenKm } = findClosestStation(
+        userLocation,
+        weatherData
+      )
       setWeatherStation(closestStation)
       setWeatherStationLocation([
         closestStation.GeoInfo.Coordinates[0].StationLatitude,
         closestStation.GeoInfo.Coordinates[0].StationLongitude,
       ])
+      setWeatherStationClosestInKm(closestInTenKm)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userLocation, weatherData])
@@ -98,8 +103,9 @@ export default function Home() {
   function findClosestStation(userLocation, stations) {
     let minDistance = Infinity
     let closestStation = null
+    let closestInTenKm = []
 
-    stations.forEach((station, index) => {
+    stations.forEach((station) => {
       const lat = station.GeoInfo.Coordinates[0].StationLatitude
       const long = station.GeoInfo.Coordinates[0].StationLongitude
       const distance = getDistanceFromLatLonInKm(
@@ -112,9 +118,17 @@ export default function Home() {
         minDistance = distance
         closestStation = station
       }
+      if (distance < 30) {
+        closestInTenKm.push(station)
+      }
     })
+    closestInTenKm = closestInTenKm.filter(
+      (station) => station !== closestStation
+    )
+    console.log(closestStation)
+    console.log(closestInTenKm)
 
-    return closestStation
+    return { closestStation, closestInTenKm }
   }
 
   /**
@@ -154,13 +168,17 @@ export default function Home() {
   return (
     <div className={style.view}>
       <Map
-        userPosition={userLocation}
-        stationPostion={weatherStationLocation}
+        mainPosition={weatherStationLocation}
+        subPosition={userLocation}
+        otherPositions={weatherStationClosestInKm}
         positionReady={checkDataReady()}
       />
       <div className={style.container}>
         <div className={style.search_view}>
-          <div className={style.header}>
+          <div
+            className={style.header}
+            onClick={() => window.location.reload(true)}
+          >
             <img src="/feather_icon_noborder_64.png" alt="" />
             <h1>Feather</h1>
           </div>
