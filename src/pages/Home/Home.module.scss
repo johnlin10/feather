@@ -6,10 +6,12 @@
 
   @media (max-width: 550px) {
     box-shadow: 0 0 40px 20px inset var(--map_bg),
-      0 -24px 40px 20px inset var(--map_bg);
+      0 -180px 32px 16px inset var(--map_bg),
+      0 96px 32px 16px inset var(--map_bg);
   }
 
   .container {
+    z-index: 9000;
     @include flex_layout(column, flex-start, space-between);
     @include set_HW(100%, 100%);
     padding: 48px;

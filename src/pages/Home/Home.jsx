@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import { useContext } from 'react'
 import { AppContext } from '../../AppContext'
 
-import Map from '../../wedgets/Map/Map'
+import WeatherMap from '../../wedgets/Map/Map'
 
 export default function Home() {
   const { userLocation, setUserLocation } = useContext(AppContext)
@@ -125,8 +125,6 @@ export default function Home() {
     closestInTenKm = closestInTenKm.filter(
       (station) => station !== closestStation
     )
-    console.log(closestStation)
-    console.log(closestInTenKm)
 
     return { closestStation, closestInTenKm }
   }
@@ -167,12 +165,6 @@ export default function Home() {
 
   return (
     <div className={style.view}>
-      <Map
-        mainPosition={weatherStationLocation}
-        subPosition={userLocation}
-        otherPositions={weatherStationClosestInKm}
-        positionReady={checkDataReady()}
-      />
       <div className={style.container}>
         <div className={style.search_view}>
           <div
@@ -211,6 +203,12 @@ export default function Home() {
           <p>加載中...</p>
         )}
       </div>
+      <WeatherMap
+        mainPosition={weatherStationLocation}
+        subPosition={userLocation}
+        otherPositions={weatherStationClosestInKm}
+        positionReady={checkDataReady()}
+      />
     </div>
   )
 }

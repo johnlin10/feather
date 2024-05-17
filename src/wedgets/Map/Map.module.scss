@@ -1,3 +1,5 @@
+@import '../../mixin.scss';
+
 .mapContainer {
   z-index: -1;
   position: absolute;
@@ -23,4 +25,18 @@
       -webkit-filter: brightness(2);
     }
   }
+}
+
+:global(.custom-tooltip) {
+  @include border_radius(13px !important);
+  padding: 9px 12px !important;
+}
+:global(.custom-tooltip):global(.leaflet-tooltip-top) {
+  background-color: #4f4f4f;
+  color: #ffffffa1;
+  border: none;
+}
+
+:global(.custom-tooltip):global(.leaflet-tooltip-top)::before {
+  border-top-color: #4f4f4f;
 }

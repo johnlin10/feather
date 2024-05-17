@@ -7,6 +7,8 @@ import { MapContainer } from 'react-leaflet/MapContainer'
 import { TileLayer } from 'react-leaflet/TileLayer'
 import { useMap } from 'react-leaflet/hooks'
 import { Marker } from 'react-leaflet/Marker'
+import { Popup } from 'react-leaflet/Popup'
+import { Tooltip } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 
@@ -41,6 +43,18 @@ const stationsIcon = L.divIcon({
   popupAnchor: [0, -12],
 })
 
+const FitBounds = ({ bounds, minZoom = 11, maxZoom = 12 }) => {
+  const map = useMap()
+
+  useEffect(() => {
+    if (bounds && bounds.length > 0) {
+      map.fitBounds(bounds, { minZoom, maxZoom })
+    }
+  }, [bounds, map, maxZoom, minZoom])
+
+  return null
+}
+
 const RecenterMap = ({ position }) => {
   const map = useMap()
   useEffect(() => {
@@ -48,7 +62,7 @@ const RecenterMap = ({ position }) => {
   }, [position, map])
   return null
 }
-export default function Map({
+export default function WeatherMap({
   mainPosition,
   subPosition,
   otherPositions,
@@ -56,20 +70,20 @@ export default function Map({
 }) {
   const defaultPotision = [51.505, -0.09]
 
-  useEffect(() => {
-    console.log(mainPosition)
-    console.log(subPosition)
-    console.log(otherPositions)
-  }, [mainPosition, subPosition, otherPositions])
+  const bounds = []
+  if (mainPosition) bounds.push(mainPosition)
+  if (subPosition) bounds.push(subPosition)
 
   return (
     <div className={style.mapContainer}>
       <MapContainer
         className={style.map}
         center={defaultPotision}
-        zoom={12.5}
+        zoom={13}
         zoomControl={false}
         scrollWheelZoom={false}
+        doubleClickZoom={false}
+        dragging={false}
       >
         {positionReady && (
           <>
@@ -84,23 +98,46 @@ export default function Map({
                 station.GeoInfo.Coordinates[0].StationLatitude,
                 station.GeoInfo.Coordinates[0].StationLongitude,
               ]
+              const weather = station.WeatherElement.Weather
+              const airTemperature = station.WeatherElement.AirTemperature
+              const relativeHumidity = station.WeatherElement.RelativeHumidity
               return (
                 <>
-                  <Marker
-                    key={index}
-                    position={position}
-                    icon={stationsIcon}
-                  ></Marker>
+                  <Marker key={index} position={position} icon={stationsIcon}>
+                    <Tooltip
+                      permanent
+                      direction="top"
+                      offset={[0, -20]}
+                      className="custom-tooltip"
+                    >
+                      <h3>{weather ? weather : ''}</h3>
+                      <p>
+                        {airTemperature > 30
+                          ? `溫度 ${airTemperature}℃`
+                          : '溫度 Error'}
+                      </p>
+                      <p>
+                        {relativeHumidity > 0
+                          ? `濕度 ${relativeHumidity}%`
+                          : '濕度 Error'}
+                      </p>
+                    </Tooltip>
+                  </Marker>
                 </>
               )
             })}
             <RecenterMap
               position={mainPosition ? mainPosition : defaultPotision}
             />
+            <FitBounds bounds={bounds} />
           </>
         )}
 
-        <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png" />
+        <TileLayer
+          dragging={false}
+          touchZoom={false}
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+        />
       </MapContainer>
     </div>
   )
