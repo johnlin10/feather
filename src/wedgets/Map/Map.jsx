@@ -8,7 +8,7 @@ import { TileLayer } from 'react-leaflet/TileLayer'
 import { useMap } from 'react-leaflet/hooks'
 import { Marker } from 'react-leaflet/Marker'
 import { Popup } from 'react-leaflet/Popup'
-import { Tooltip } from 'react-leaflet'
+import { Tooltip, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 
@@ -43,7 +43,12 @@ const stationsIcon = L.divIcon({
   popupAnchor: [0, -12],
 })
 
-const FitBounds = ({ bounds, minZoom = 11, maxZoom = 12 }) => {
+/**
+ *
+ * @param {*} param0
+ * @returns
+ */
+const FitBounds = ({ bounds, minZoom = 13, maxZoom = 13 }) => {
   const map = useMap()
 
   useEffect(() => {
@@ -62,6 +67,46 @@ const RecenterMap = ({ position }) => {
   }, [position, map])
   return null
 }
+
+const LocationButton = ({ bounds }) => {
+  const [showButton, setShowButton] = useState(false)
+  const map = useMap()
+  const minZoom = 13
+  const maxZoom = 13
+
+  useEffect(() => {
+    if (bounds && bounds.length > 0) {
+      map.fitBounds(bounds, { minZoom, maxZoom })
+    }
+  }, [bounds, map])
+
+  useMapEvents({
+    moveend: () => {
+      const mapBounds = map.getBounds()
+      let outOfBounds = false
+      bounds.forEach((bound) => {
+        if (!mapBounds.contains(bound)) {
+          outOfBounds = true
+        }
+      })
+      setShowButton(outOfBounds)
+    },
+  })
+
+  const handleClick = () => {
+    map.fitBounds(bounds, { minZoom, maxZoom })
+    setShowButton(false)
+  }
+
+  return (
+    showButton && (
+      <button className={style.locationButton} onClick={handleClick}>
+        <FontAwesomeIcon icon={faLocationDot} />
+      </button>
+    )
+  )
+}
+
 export default function WeatherMap({
   mainPosition,
   subPosition,
@@ -79,19 +124,36 @@ export default function WeatherMap({
       <MapContainer
         className={style.map}
         center={defaultPotision}
-        zoom={13}
+        zoom={12}
         zoomControl={false}
-        scrollWheelZoom={false}
+        // scrollWheelZoom={false}
         doubleClickZoom={false}
-        dragging={false}
+        // dragging={false}
       >
+        <LocationButton bounds={bounds} />
         {positionReady && (
           <>
             {subPosition && (
-              <Marker position={subPosition} icon={customIcon}></Marker>
+              <Marker position={subPosition} icon={customIcon}>
+                <Tooltip
+                  direction="top"
+                  offset={[0, -32]}
+                  className="custom-tooltip"
+                >
+                  <p>您的位置</p>
+                </Tooltip>
+              </Marker>
             )}
             {mainPosition && (
-              <Marker position={mainPosition} icon={stationIcon}></Marker>
+              <Marker position={mainPosition} icon={stationIcon}>
+                <Tooltip
+                  direction="top"
+                  offset={[0, -32]}
+                  className="custom-tooltip"
+                >
+                  <p>離您最近的氣象站</p>
+                </Tooltip>
+              </Marker>
             )}
             {otherPositions.map((station, index) => {
               const position = [
@@ -105,21 +167,17 @@ export default function WeatherMap({
                 <>
                   <Marker key={index} position={position} icon={stationsIcon}>
                     <Tooltip
-                      permanent
                       direction="top"
                       offset={[0, -20]}
                       className="custom-tooltip"
                     >
                       <h3>{weather ? weather : ''}</h3>
                       <p>
-                        {airTemperature > 30
-                          ? `溫度 ${airTemperature}℃`
-                          : '溫度 Error'}
+                        溫度 {airTemperature > 30 ? `${airTemperature}℃` : '--'}
                       </p>
                       <p>
-                        {relativeHumidity > 0
-                          ? `濕度 ${relativeHumidity}%`
-                          : '濕度 Error'}
+                        濕度{' '}
+                        {relativeHumidity > 0 ? `${relativeHumidity}%` : '--'}
                       </p>
                     </Tooltip>
                   </Marker>

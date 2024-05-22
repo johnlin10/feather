@@ -1,12 +1,9 @@
 @import '../../mixin.scss';
 
 .mapContainer {
-  z-index: -1;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
+  z-index: 0;
+  height: 100%;
+  width: 100%;
   overflow: hidden;
 
   .map {
@@ -24,6 +21,20 @@
       filter: brightness(2);
       -webkit-filter: brightness(2);
     }
+
+    > .locationButton {
+      z-index: 9000;
+      @include flex_layout(row, center, center);
+      position: absolute;
+      right: 48px;
+      bottom: 120px;
+      height: 60px;
+      width: 60px;
+      background: var(--accent_color);
+      color: #fff;
+      font-size: 2rem;
+      @include border_radius(30px);
+    }
   }
 }
 
@@ -36,7 +47,6 @@
   color: #ffffffa1;
   border: none;
 }
-
 :global(.custom-tooltip):global(.leaflet-tooltip-top)::before {
   border-top-color: #4f4f4f;
 }

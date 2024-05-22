@@ -10,35 +10,25 @@
       0 96px 32px 16px inset var(--map_bg);
   }
 
-  .container {
-    z-index: 9000;
+  > .container {
+    position: relative;
+    z-index: 10;
     @include flex_layout(column, flex-start, space-between);
-    @include set_HW(100%, 100%);
-    padding: 48px;
 
     @media (max-width: 550px) {
       padding: 48px 36px;
     }
 
-    .search_view {
-      z-index: 100;
-      @include set_HW(null, calc(100% - 108px));
+    > .weatherLocalPreview {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: fit-content;
+      padding: 48px;
 
-      > .header {
-        @include flex_layout(row, center, flex-start);
-
-        cursor: pointer;
-
-        > img {
-          margin-right: 12px;
-          height: 48px;
-          user-select: none;
-        }
+      @media (max-width: 550px) {
+        padding: 36px;
       }
-    }
-
-    .content {
-      width: 100%;
 
       > * {
         width: fit-content;
@@ -61,6 +51,25 @@
         @include border_radius(24px);
       }
 
+      > p.locationPermissionDenied {
+        z-index: 100;
+        &.locationPermissionDenied {
+          @include flex_layout(row, center, flex-start);
+          padding: 3px 12px 3px 8px;
+          font-size: 1rem;
+          color: #ffffffd1;
+          background: #951e1e;
+          @include border_radius(24px);
+        }
+
+        > svg {
+          margin-right: 6px;
+        }
+      }
+      > p.error {
+        margin: 24px 6px;
+      }
+
       > .values {
         @include flex_layout(row, center, null);
         flex-wrap: wrap;
@@ -75,21 +84,13 @@
         }
       }
     }
+  }
 
-    > p {
-      z-index: 100;
-      &.locationPermissionDenied {
-        @include flex_layout(row, center, flex-start);
-        padding: 3px 12px 3px 8px;
-        font-size: 1rem;
-        color: #ffffffd1;
-        background: #951e1e;
-        @include border_radius(24px);
-      }
-
-      > svg {
-        margin-right: 6px;
-      }
-    }
+  > .mapView {
+    z-index: 0;
+    position: absolute;
+    @include set_HW(100vh, 100vw);
+    top: 0;
+    left: 0;
   }
 }

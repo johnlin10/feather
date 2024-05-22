@@ -9,6 +9,7 @@ import { useContext } from 'react'
 import { AppContext } from '../../AppContext'
 
 import WeatherMap from '../../wedgets/Map/Map'
+import BorderShadow from '../../wedgets/BorderShadow/BorderShadow'
 
 export default function Home() {
   const { userLocation, setUserLocation } = useContext(AppContext)
@@ -38,9 +39,7 @@ export default function Home() {
           if (error.code === error.PERMISSION_DENIED) {
             setLocationPermissionDenied(true)
           }
-          setError(
-            '無法訪問您的位置，請同意我們取用您的位置，以提供在地天氣的服務。'
-          )
+          setError('無法訪問您的位置，請同意我們取用您的位置，以提供天氣服務。')
         }
       )
     } else {
@@ -118,7 +117,7 @@ export default function Home() {
         minDistance = distance
         closestStation = station
       }
-      if (distance < 30) {
+      if (distance < 1000) {
         closestInTenKm.push(station)
       }
     })
@@ -166,49 +165,51 @@ export default function Home() {
   return (
     <div className={style.view}>
       <div className={style.container}>
-        <div className={style.search_view}>
-          <div
-            className={style.header}
-            onClick={() => window.location.reload(true)}
-          >
-            <img src="/feather_icon_noborder_64.png" alt="" />
-            <h1>Feather</h1>
-          </div>
-        </div>
-        <p className={style.error}>{error}</p>
-        {checkDataReady() ? (
-          <div className={style.content}>
-            <h1>
-              <FontAwesomeIcon icon={faLocationDot} />
-              {weatherStation?.GeoInfo.CountyName} {weatherStation?.StationName}
-            </h1>
-            <p className={style.weather}>
-              {weatherStation?.WeatherElement.Weather}
-            </p>
-            <div className={style.values}>
-              <p>溫度 {weatherStation?.WeatherElement.AirTemperature} ℃</p>
-              <p>
-                相對濕度 {weatherStation?.WeatherElement.RelativeHumidity} %
+        <div className={style.weatherLocalPreview}>
+          {checkDataReady() ? (
+            <>
+              <h1>
+                <FontAwesomeIcon icon={faLocationDot} />
+                {weatherStation?.GeoInfo.CountyName}{' '}
+                {weatherStation?.StationName}
+              </h1>
+              <p className={style.weather}>
+                {weatherStation?.WeatherElement.Weather}
               </p>
-              <p>風速 {weatherStation?.WeatherElement.WindSpeed} km/s</p>
-              <p>大氣壓力 {weatherStation?.WeatherElement.AirPressure} hPa</p>
-            </div>
-          </div>
-        ) : locationPermissionDenied ? (
-          <p className={style.locationPermissionDenied}>
-            <FontAwesomeIcon icon={faCircleExclamation} />
-            位置存取遭拒
-          </p>
-        ) : (
-          <p>加載中...</p>
-        )}
+              <div className={style.values}>
+                <p>溫度 {weatherStation?.WeatherElement.AirTemperature} ℃</p>
+                <p>
+                  相對濕度 {weatherStation?.WeatherElement.RelativeHumidity} %
+                </p>
+                <p>風速 {weatherStation?.WeatherElement.WindSpeed} km/s</p>
+                <p>大氣壓力 {weatherStation?.WeatherElement.AirPressure} hPa</p>
+              </div>
+            </>
+          ) : locationPermissionDenied ? (
+            <p className={style.locationPermissionDenied}>
+              <FontAwesomeIcon icon={faCircleExclamation} />
+              位置存取遭拒
+            </p>
+          ) : (
+            <p>加載中...</p>
+          )}
+          {error && <p className={style.error}>{error}</p>}
+        </div>
       </div>
-      <WeatherMap
-        mainPosition={weatherStationLocation}
-        subPosition={userLocation}
-        otherPositions={weatherStationClosestInKm}
-        positionReady={checkDataReady()}
-      />
+      <div className={style.mapView}>
+        <BorderShadow
+          top={{ blur: 108, color: 'var(--map_bg)' }}
+          right={{ blur: 48, color: 'var(--map_bg)' }}
+          bottom={{ blur: 216, color: 'var(--map_bg)' }}
+          left={{ blur: 48, color: 'var(--map_bg)' }}
+        />
+        <WeatherMap
+          mainPosition={weatherStationLocation}
+          subPosition={userLocation}
+          otherPositions={weatherStationClosestInKm}
+          positionReady={checkDataReady()}
+        />
+      </div>
     </div>
   )
 }

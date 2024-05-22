@@ -1,0 +1,31 @@
+@import '../../mixin.scss';
+
+.header {
+  z-index: 9000;
+  @include flex_layout(row, center, space-between);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: fit-content;
+  padding: 48px;
+
+  @media (max-width: 550px) {
+    padding: 36px;
+  }
+
+  > .logo {
+    @include flex_layout(row, center, flex-start);
+    height: fit-content;
+    width: fit-content;
+    cursor: pointer;
+
+    > img {
+      height: 48px;
+      margin-right: 12px;
+    }
+
+    > h1 {
+      font-size: 2rem;
+    }
+  }
+}
