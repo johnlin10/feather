@@ -23,11 +23,11 @@
     }
 
     > .locationButton {
-      z-index: 9000;
+      z-index: 6000;
       @include flex_layout(row, center, center);
-      position: absolute;
-      right: 48px;
-      bottom: 120px;
+      position: fixed;
+      right: 36px;
+      top: 120px;
       height: 60px;
       width: 60px;
       background: var(--accent_color);
@@ -35,6 +35,22 @@
       font-size: 2rem;
       @include border_radius(30px);
     }
+  }
+}
+
+:global(.user-location-icon) {
+  > svg {
+    height: 100%;
+  }
+}
+:global(.station-closest-location-icon) {
+  > svg {
+    height: 100%;
+  }
+}
+:global(.station-location-icon) {
+  > svg {
+    height: 100%;
   }
 }
 

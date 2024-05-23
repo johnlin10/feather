@@ -12,35 +12,38 @@ import { Tooltip, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 
-const svgIcon =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#ffffffd1"><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>'
+const userLocationSvg =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#fff"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>'
 
-const stationSvg =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#5a98ee"><path d="M32 32C32 14.3 46.3 0 64 0H320c17.7 0 32 14.3 32 32s-14.3 32-32 32H290.5l11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3H32c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64H64C46.3 64 32 49.7 32 32zM160 384h64v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V384z"/></svg>'
+const closestStationLocationSvg =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="#5a98ee"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M16 144a144 144 0 1 1 288 0A144 144 0 1 1 16 144zM160 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM128 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"/></svg>'
 
-const stationsSvg =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#ffffffd1"><path d="M32 32C32 14.3 46.3 0 64 0H320c17.7 0 32 14.3 32 32s-14.3 32-32 32H290.5l11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3H32c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64H64C46.3 64 32 49.7 32 32zM160 384h64v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V384z"/></svg>'
+const stationLocationSvg =
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="#ffffffd1"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M16 144a144 144 0 1 1 288 0A144 144 0 1 1 16 144zM160 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM128 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"/></svg>'
 
-const customIcon = L.divIcon({
-  html: svgIcon,
-  className: 'custom-div-icon',
-  iconSize: [24, 24],
-  iconAnchor: [12, 24],
-  popupAnchor: [0, -24],
+const ULIconSize = 28
+const userLocationIcon = L.divIcon({
+  html: userLocationSvg,
+  className: 'user-location-icon',
+  iconSize: [ULIconSize, ULIconSize],
+  iconAnchor: [ULIconSize / 2, ULIconSize],
+  popupAnchor: [0, 0 - ULIconSize],
 })
-const stationIcon = L.divIcon({
-  html: stationSvg,
-  className: 'station-div-icon',
-  iconSize: [24, 24],
-  iconAnchor: [12, 24],
-  popupAnchor: [0, -24],
+const CSLIconSize = 36
+const closestStationLocationIcon = L.divIcon({
+  html: closestStationLocationSvg,
+  className: 'station-closest-location-icon',
+  iconSize: [CSLIconSize, CSLIconSize],
+  iconAnchor: [CSLIconSize / 2, CSLIconSize],
+  popupAnchor: [0, 0 - CSLIconSize],
 })
-const stationsIcon = L.divIcon({
-  html: stationsSvg,
-  className: 'station-div-icon',
-  iconSize: [12, 12],
-  iconAnchor: [6, 12],
-  popupAnchor: [0, -12],
+const SLIconSize = 18
+const stationLocationIcon = L.divIcon({
+  html: stationLocationSvg,
+  className: 'station-location-icon',
+  iconSize: [SLIconSize, SLIconSize],
+  iconAnchor: [SLIconSize / 2, SLIconSize],
+  popupAnchor: [0, 0 - SLIconSize],
 })
 
 /**
@@ -134,7 +137,7 @@ export default function WeatherMap({
         {positionReady && (
           <>
             {subPosition && (
-              <Marker position={subPosition} icon={customIcon}>
+              <Marker position={subPosition} icon={userLocationIcon}>
                 <Tooltip
                   direction="top"
                   offset={[0, -32]}
@@ -145,7 +148,7 @@ export default function WeatherMap({
               </Marker>
             )}
             {mainPosition && (
-              <Marker position={mainPosition} icon={stationIcon}>
+              <Marker position={mainPosition} icon={closestStationLocationIcon}>
                 <Tooltip
                   direction="top"
                   offset={[0, -32]}
@@ -165,7 +168,11 @@ export default function WeatherMap({
               const relativeHumidity = station.WeatherElement.RelativeHumidity
               return (
                 <>
-                  <Marker key={index} position={position} icon={stationsIcon}>
+                  <Marker
+                    key={index}
+                    position={position}
+                    icon={stationLocationIcon}
+                  >
                     <Tooltip
                       direction="top"
                       offset={[0, -20]}
