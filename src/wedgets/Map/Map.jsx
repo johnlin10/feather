@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import style from './Map.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
+import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
 
 import { MapContainer } from 'react-leaflet/MapContainer'
 import { TileLayer } from 'react-leaflet/TileLayer'
@@ -104,7 +104,7 @@ const LocationButton = ({ bounds }) => {
   return (
     showButton && (
       <button className={style.locationButton} onClick={handleClick}>
-        <FontAwesomeIcon icon={faLocationDot} />
+        <FontAwesomeIcon icon={faLocationArrow} />
       </button>
     )
   )

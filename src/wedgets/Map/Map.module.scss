@@ -30,10 +30,15 @@
       top: 120px;
       height: 48px;
       width: 48px;
-      background: var(--accent_color);
-      color: #fff;
-      font-size: 1.7rem;
+      color: #f2c82d;
+      background: #ffffff;
+      font-size: 1.9rem;
       @include border_radius(30px);
+
+      > svg {
+        margin-left: -3px;
+        margin-bottom: -3px;
+      }
     }
   }
 }
@@ -81,4 +86,9 @@
 }
 :global(.custom-tooltip):global(.leaflet-tooltip-top)::before {
   border-top-color: #4f4f4f;
+}
+
+//
+:global(.leaflet-control-attribution) {
+  opacity: 0;
 }
