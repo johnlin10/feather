@@ -28,39 +28,55 @@
       position: fixed;
       right: 36px;
       top: 120px;
-      height: 60px;
-      width: 60px;
+      height: 48px;
+      width: 48px;
       background: var(--accent_color);
       color: #fff;
-      font-size: 2rem;
+      font-size: 1.7rem;
       @include border_radius(30px);
     }
   }
 }
 
+:global(.leaflet-marker-icon) {
+  @include flex_layout(row, center, center);
+  display: flex !important;
+}
 :global(.user-location-icon) {
   > svg {
+    align-self: center;
     height: 100%;
   }
 }
 :global(.station-closest-location-icon) {
   > svg {
+    align-self: center;
     height: 100%;
   }
 }
 :global(.station-location-icon) {
   > svg {
+    align-self: center;
     height: 100%;
   }
 }
 
+// 定位點彈出的 Tips
 :global(.custom-tooltip) {
   @include border_radius(13px !important);
   padding: 9px 12px !important;
+
+  > h3 {
+    margin: 3px 0 3px -3px;
+    padding: 2px 6px;
+    width: fit-content;
+    background: #ffffff3f;
+    @include border_radius(6px);
+  }
 }
 :global(.custom-tooltip):global(.leaflet-tooltip-top) {
   background-color: #4f4f4f;
-  color: #ffffffa1;
+  color: #ffffffc1;
   border: none;
 }
 :global(.custom-tooltip):global(.leaflet-tooltip-top)::before {

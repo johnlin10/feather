@@ -13,10 +13,10 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 
 const userLocationSvg =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#fff"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>'
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#ffd43b"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>'
 
 const closestStationLocationSvg =
-  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="#5a98ee"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M16 144a144 144 0 1 1 288 0A144 144 0 1 1 16 144zM160 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM128 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"/></svg>'
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="var(--accent_color_L2)"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M16 144a144 144 0 1 1 288 0A144 144 0 1 1 16 144zM160 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM128 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"/></svg>'
 
 const stationLocationSvg =
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="#ffffffd1"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M16 144a144 144 0 1 1 288 0A144 144 0 1 1 16 144zM160 80c8.8 0 16-7.2 16-16s-7.2-16-16-16c-53 0-96 43-96 96c0 8.8 7.2 16 16 16s16-7.2 16-16c0-35.3 28.7-64 64-64zM128 480V317.1c10.4 1.9 21.1 2.9 32 2.9s21.6-1 32-2.9V480c0 17.7-14.3 32-32 32s-32-14.3-32-32z"/></svg>'
@@ -151,7 +151,7 @@ export default function WeatherMap({
               <Marker position={mainPosition} icon={closestStationLocationIcon}>
                 <Tooltip
                   direction="top"
-                  offset={[0, -32]}
+                  offset={[0, -40]}
                   className="custom-tooltip"
                 >
                   <p>離您最近的氣象站</p>
@@ -163,9 +163,14 @@ export default function WeatherMap({
                 station.GeoInfo.Coordinates[0].StationLatitude,
                 station.GeoInfo.Coordinates[0].StationLongitude,
               ]
+
+              const locationName = `${station.GeoInfo.CountyName} ${station.StationName}`
               const weather = station.WeatherElement.Weather
               const airTemperature = station.WeatherElement.AirTemperature
               const relativeHumidity = station.WeatherElement.RelativeHumidity
+              const windSpeed = station.WeatherElement.WindSpeed
+              const airPressure = station.WeatherElement.AirPressure
+
               return (
                 <>
                   <Marker
@@ -178,13 +183,20 @@ export default function WeatherMap({
                       offset={[0, -20]}
                       className="custom-tooltip"
                     >
+                      <h2>{locationName}</h2>
                       <h3>{weather ? weather : ''}</h3>
                       <p>
-                        溫度 {airTemperature > 30 ? `${airTemperature}℃` : '--'}
+                        溫度 |{' '}
+                        {airTemperature > 30 ? `${airTemperature}℃` : '--'}
                       </p>
                       <p>
-                        濕度{' '}
+                        濕度 |{' '}
                         {relativeHumidity > 0 ? `${relativeHumidity}%` : '--'}
+                      </p>
+                      <p>風速 | {windSpeed > 0 ? `${windSpeed} km/s` : '--'}</p>
+                      <p>
+                        大氣壓力 |{' '}
+                        {airPressure > 0 ? `${airPressure} hPa` : '--'}
                       </p>
                     </Tooltip>
                   </Marker>

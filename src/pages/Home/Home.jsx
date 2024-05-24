@@ -1,7 +1,7 @@
 import style from './Home.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faLocationDot,
+  faMapPin,
   faCircleExclamation,
 } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
@@ -169,7 +169,10 @@ export default function Home() {
           {checkDataReady() ? (
             <>
               <h1>
-                <FontAwesomeIcon icon={faLocationDot} />
+                <FontAwesomeIcon
+                  icon={faMapPin}
+                  style={{ color: 'var(--accent_color_L2)' }}
+                />
                 {weatherStation?.GeoInfo.CountyName}{' '}
                 {weatherStation?.StationName}
               </h1>
@@ -177,12 +180,34 @@ export default function Home() {
                 {weatherStation?.WeatherElement.Weather}
               </p>
               <div className={style.values}>
-                <p>溫度 {weatherStation?.WeatherElement.AirTemperature} ℃</p>
                 <p>
-                  相對濕度 {weatherStation?.WeatherElement.RelativeHumidity} %
+                  溫度{' '}
+                  {weatherStation?.WeatherElement.AirTemperature > -30
+                    ? weatherStation.WeatherElement.AirTemperature
+                    : '--'}{' '}
+                  ℃
                 </p>
-                <p>風速 {weatherStation?.WeatherElement.WindSpeed} km/s</p>
-                <p>大氣壓力 {weatherStation?.WeatherElement.AirPressure} hPa</p>
+                <p>
+                  相對濕度{' '}
+                  {weatherStation?.WeatherElement.RelativeHumidity > 0
+                    ? weatherStation.WeatherElement.RelativeHumidity
+                    : '--'}{' '}
+                  %
+                </p>
+                <p>
+                  風速{' '}
+                  {weatherStation?.WeatherElement.WindSpeed > 0
+                    ? weatherStation.WeatherElement.WindSpeed
+                    : '--'}{' '}
+                  km/s
+                </p>
+                <p>
+                  大氣壓力{' '}
+                  {weatherStation?.WeatherElement.AirPressure > 0
+                    ? weatherStation.WeatherElement.AirPressure
+                    : '--'}{' '}
+                  hPa
+                </p>
               </div>
             </>
           ) : locationPermissionDenied ? (
