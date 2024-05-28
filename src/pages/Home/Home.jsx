@@ -223,10 +223,10 @@ export default function Home() {
       </div>
       <div className={style.mapView}>
         <BorderShadow
-          top={{ blur: 108, color: 'var(--bg)' }}
-          right={{ blur: 48, color: 'var(--bg)' }}
-          bottom={{ blur: 216, color: 'var(--bg)' }}
-          left={{ blur: 48, color: 'var(--bg)' }}
+          top={{ blur: 96, color: 'var(--bg)' }}
+          right={{ blur: 36, color: 'var(--bg)' }}
+          bottom={{ blur: 180, color: 'var(--bg)' }}
+          left={{ blur: 36, color: 'var(--bg)' }}
         />
         <WeatherMap
           mainPosition={weatherStationLocation}

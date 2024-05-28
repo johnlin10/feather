@@ -23,15 +23,15 @@
     }
 
     > .locationButton {
-      z-index: 6000;
+      z-index: 7000;
       @include flex_layout(row, center, center);
       position: absolute;
-      right: 36px;
+      right: 48px;
       bottom: 240px;
       height: 48px;
       width: 48px;
       color: #f2c82d;
-      background: #212e40;
+      background: #ffffff;
       font-size: 1.9rem;
       @include border_radius(30px);
 
