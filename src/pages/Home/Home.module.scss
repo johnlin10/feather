@@ -1,8 +1,12 @@
 @import '../../mixin.scss';
 
 .view {
+  @include flex_layout(row, null, null);
   @include set_HW(100%, 100%);
+  position: relative;
   box-shadow: 0 0 80px 80px inset var(--map_bg);
+  width: auto;
+  scroll-snap-align: center;
 
   @media (max-width: 550px) {
     box-shadow: 0 0 40px 20px inset var(--map_bg),
@@ -10,84 +14,82 @@
       0 96px 32px 16px inset var(--map_bg);
   }
 
-  > .container {
+  > .weatherLocalPreview {
     z-index: 1000;
-    position: relative;
-    @include flex_layout(column, flex-start, space-between);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 
-    > .weatherLocalPreview {
-      z-index: 1000;
-      position: fixed;
-      bottom: 0;
-      left: 0;
+    padding: 0 48px 48px 48px;
+
+    @media (max-width: 550px) {
+      padding: 0 36px 36px 36px;
+    }
+
+    > * {
       width: fit-content;
-      padding: 48px;
+    }
 
-      @media (max-width: 550px) {
-        padding: 36px;
+    > h1 {
+      margin-bottom: 12px;
+
+      > svg {
+        margin-right: 12px;
       }
+    }
 
-      > * {
-        width: fit-content;
-      }
+    > p.weather {
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 3px 12px;
+      background: #ffffff3f;
+      @include border_radius(24px);
+    }
 
-      > h1 {
-        margin-bottom: 12px;
-
-        > svg {
-          margin-right: 12px;
-        }
-      }
-
-      > p.weather {
-        margin-bottom: 12px;
-        font-size: 1.2rem;
-        font-weight: 600;
-        padding: 3px 12px;
-        background: #ffffff3f;
+    > p.locationPermissionDenied {
+      z-index: 100;
+      &.locationPermissionDenied {
+        @include flex_layout(row, center, flex-start);
+        padding: 3px 12px 3px 8px;
+        font-size: 1rem;
+        color: #ffffffd1;
+        background: #951e1e;
         @include border_radius(24px);
       }
 
-      > p.locationPermissionDenied {
-        z-index: 100;
-        &.locationPermissionDenied {
-          @include flex_layout(row, center, flex-start);
-          padding: 3px 12px 3px 8px;
-          font-size: 1rem;
-          color: #ffffffd1;
-          background: #951e1e;
-          @include border_radius(24px);
-        }
-
-        > svg {
-          margin-right: 6px;
-        }
+      > svg {
+        margin-right: 6px;
       }
-      > p.error {
-        margin: 24px 6px;
-      }
+    }
+    > p.error {
+      margin: 24px 6px;
+    }
 
-      > .values {
-        @include flex_layout(row, center, null);
-        flex-wrap: wrap;
-        width: 100%;
+    > .values {
+      @include flex_layout(row, center, null);
+      flex-wrap: wrap;
+      width: 100%;
 
-        > p {
-          min-width: max-content;
-          width: fit-content;
-          margin: 3px 18px 3px 0;
-          font-size: 1rem;
-          color: #ffffff7f;
-        }
+      > p {
+        min-width: max-content;
+        width: fit-content;
+        margin: 3px 18px 3px 0;
+        font-size: 1rem;
+        color: #ffffff7f;
       }
     }
   }
 
   > .mapView {
     z-index: 900;
-    position: absolute;
+    @include flex_layout(row, center, null);
     @include set_HW(100vh, 100vw);
     top: 0;
     left: 0;
+    height: 100%;
+    min-width: 100vw;
+    width: fit-content;
   }
 }

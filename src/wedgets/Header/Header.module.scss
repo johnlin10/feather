@@ -3,11 +3,12 @@
 .header {
   z-index: 9000;
   @include flex_layout(row, center, space-between);
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: fit-content;
   padding: 48px;
+  scroll-snap-type: mandatory;
 
   @media (max-width: 550px) {
     padding: 36px;
@@ -28,4 +29,16 @@
       font-size: 2rem;
     }
   }
+
+  // > .features {
+  //   @include flex_layout(row, center, flex-end);
+
+  //   > button {
+  //     background: #ffffff00;
+  //     color: #ffffffd1;
+  //     font-size: 1.5rem;
+  //     width: 48px;
+  //     height: 48px;
+  //   }
+  // }
 }

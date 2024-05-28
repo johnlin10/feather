@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import style from './Map.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLocationArrow } from '@fortawesome/free-solid-svg-icons'
@@ -129,8 +129,8 @@ export default function WeatherMap({
         center={defaultPotision}
         zoom={12}
         zoomControl={false}
-        // scrollWheelZoom={false}
-        doubleClickZoom={false}
+        scrollWheelZoom={true}
+        // doubleClickZoom={false}
         // dragging={false}
       >
         <LocationButton bounds={bounds} />
@@ -140,7 +140,7 @@ export default function WeatherMap({
               <Marker position={subPosition} icon={userLocationIcon}>
                 <Tooltip
                   direction="top"
-                  offset={[0, -32]}
+                  offset={[0, -40]}
                   className="custom-tooltip"
                 >
                   <p>您的位置</p>
@@ -151,7 +151,7 @@ export default function WeatherMap({
               <Marker position={mainPosition} icon={closestStationLocationIcon}>
                 <Tooltip
                   direction="top"
-                  offset={[0, -40]}
+                  offset={[0, -50]}
                   className="custom-tooltip"
                 >
                   <p>離您最近的氣象站</p>
@@ -180,7 +180,7 @@ export default function WeatherMap({
                   >
                     <Tooltip
                       direction="top"
-                      offset={[0, -20]}
+                      offset={[0, -28]}
                       className="custom-tooltip"
                     >
                       <h2>{locationName}</h2>

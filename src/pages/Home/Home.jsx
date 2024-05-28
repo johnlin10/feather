@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { useContext } from 'react'
 import { AppContext } from '../../AppContext'
 
+import Header from '../../wedgets/Header/Header'
 import WeatherMap from '../../wedgets/Map/Map'
 import BorderShadow from '../../wedgets/BorderShadow/BorderShadow'
 
@@ -30,7 +31,6 @@ export default function Home() {
         (position) => {
           const { latitude, longitude } = position.coords
           setUserLocation([latitude, longitude])
-          console.log([latitude, longitude])
 
           setLocationPermissionDenied(false)
           setError('')
@@ -164,69 +164,69 @@ export default function Home() {
 
   return (
     <div className={style.view}>
-      <div className={style.container}>
-        <div className={style.weatherLocalPreview}>
-          {checkDataReady() ? (
-            <>
-              <h1>
-                <FontAwesomeIcon
-                  icon={faMapPin}
-                  style={{ color: 'var(--accent_color_L2)' }}
-                />
-                {weatherStation?.GeoInfo.CountyName}{' '}
-                {weatherStation?.StationName}
-              </h1>
-              <p className={style.weather}>
-                {weatherStation?.WeatherElement.Weather}
-              </p>
-              <div className={style.values}>
-                <p>
-                  溫度{' '}
-                  {weatherStation?.WeatherElement.AirTemperature > -30
-                    ? weatherStation.WeatherElement.AirTemperature
-                    : '--'}{' '}
-                  ℃
-                </p>
-                <p>
-                  相對濕度{' '}
-                  {weatherStation?.WeatherElement.RelativeHumidity > 0
-                    ? weatherStation.WeatherElement.RelativeHumidity
-                    : '--'}{' '}
-                  %
-                </p>
-                <p>
-                  風速{' '}
-                  {weatherStation?.WeatherElement.WindSpeed > 0
-                    ? weatherStation.WeatherElement.WindSpeed
-                    : '--'}{' '}
-                  km/s
-                </p>
-                <p>
-                  大氣壓力{' '}
-                  {weatherStation?.WeatherElement.AirPressure > 0
-                    ? weatherStation.WeatherElement.AirPressure
-                    : '--'}{' '}
-                  hPa
-                </p>
-              </div>
-            </>
-          ) : locationPermissionDenied ? (
-            <p className={style.locationPermissionDenied}>
-              <FontAwesomeIcon icon={faCircleExclamation} />
-              位置存取遭拒
+      <Header />
+      <div className={style.weatherLocalPreview}>
+        {checkDataReady() ? (
+          <>
+            <h1>
+              <FontAwesomeIcon
+                icon={faMapPin}
+                style={{ color: 'var(--accent_color_L2)' }}
+              />
+              {weatherStation?.GeoInfo.CountyName} {weatherStation?.StationName}
+            </h1>
+            <p className={style.weather}>
+              {weatherStation?.WeatherElement.Weather === -99
+                ? weatherStation.WeatherElement.Weather
+                : '--'}
             </p>
-          ) : (
-            <p>加載中...</p>
-          )}
-          {error && <p className={style.error}>{error}</p>}
-        </div>
+            <div className={style.values}>
+              <p>
+                溫度{' '}
+                {weatherStation?.WeatherElement.AirTemperature > -30
+                  ? weatherStation.WeatherElement.AirTemperature
+                  : '--'}{' '}
+                ℃
+              </p>
+              <p>
+                相對濕度{' '}
+                {weatherStation?.WeatherElement.RelativeHumidity > 0
+                  ? weatherStation.WeatherElement.RelativeHumidity
+                  : '--'}{' '}
+                %
+              </p>
+              <p>
+                風速{' '}
+                {weatherStation?.WeatherElement.WindSpeed > 0
+                  ? weatherStation.WeatherElement.WindSpeed
+                  : '--'}{' '}
+                km/s
+              </p>
+              <p>
+                大氣壓力{' '}
+                {weatherStation?.WeatherElement.AirPressure > 0
+                  ? weatherStation.WeatherElement.AirPressure
+                  : '--'}{' '}
+                hPa
+              </p>
+            </div>
+          </>
+        ) : locationPermissionDenied ? (
+          <p className={style.locationPermissionDenied}>
+            <FontAwesomeIcon icon={faCircleExclamation} />
+            位置存取遭拒
+          </p>
+        ) : (
+          <p>加載中...</p>
+        )}
+        {error && <p className={style.error}>{error}</p>}
       </div>
       <div className={style.mapView}>
         <BorderShadow
-          top={{ blur: 108, color: 'var(--map_bg)' }}
-          right={{ blur: 48, color: 'var(--map_bg)' }}
-          bottom={{ blur: 216, color: 'var(--map_bg)' }}
-          left={{ blur: 48, color: 'var(--map_bg)' }}
+          top={{ blur: 108, color: 'var(--bg)' }}
+          right={{ blur: 48, color: 'var(--bg)' }}
+          bottom={{ blur: 216, color: 'var(--bg)' }}
+          left={{ blur: 48, color: 'var(--bg)' }}
         />
         <WeatherMap
           mainPosition={weatherStationLocation}

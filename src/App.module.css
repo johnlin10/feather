@@ -1,1 +1,1 @@
-.app{height:100%;width:100%}
+.app{height:100%;width:auto;overflow-x:scroll;scroll-snap-type:x mandatory;scroll-behavior:smooth;-ms-overflow-style:none;scrollbar-width:none}.app>main{display:flex;flex-direction:row}.app::-webkit-scrollbar{display:none}

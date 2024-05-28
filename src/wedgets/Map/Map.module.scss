@@ -18,20 +18,20 @@
     }
 
     img {
-      filter: brightness(2);
-      -webkit-filter: brightness(2);
+      filter: brightness(2.5) sepia(1) saturate(0.8) hue-rotate(180deg);
+      -webkit-filter: brightness(2.5) sepia(1) saturate(0.8) hue-rotate(180deg);
     }
 
     > .locationButton {
       z-index: 6000;
       @include flex_layout(row, center, center);
-      position: fixed;
+      position: absolute;
       right: 36px;
-      top: 120px;
+      bottom: 240px;
       height: 48px;
       width: 48px;
       color: #f2c82d;
-      background: #ffffff;
+      background: #212e40;
       font-size: 1.9rem;
       @include border_radius(30px);
 
@@ -48,21 +48,43 @@
   display: flex !important;
 }
 :global(.user-location-icon) {
+  &:hover {
+    > svg {
+      height: 36px !important;
+      width: auto;
+    }
+  }
   > svg {
-    align-self: center;
+    align-self: flex-end;
     height: 100%;
+    @include transition(0.2s);
   }
 }
 :global(.station-closest-location-icon) {
+  &:hover {
+    > svg {
+      height: 48px !important;
+      width: auto;
+    }
+  }
   > svg {
-    align-self: center;
+    align-self: flex-end;
     height: 100%;
+    @include transition(0.2s);
   }
 }
+
 :global(.station-location-icon) {
+  &:hover {
+    > svg {
+      height: 24px !important;
+      width: auto;
+    }
+  }
   > svg {
-    align-self: center;
+    align-self: flex-end;
     height: 100%;
+    @include transition(0.2s);
   }
 }
 
